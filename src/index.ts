@@ -13,8 +13,6 @@ type Variables = {
 
 const app = new Hono<{ Bindings: Env; Variables: Variables }>();
 
-// Hardcoded Procore token (replace with your actual token)
-const HARDCODED_PROCORE_TOKEN = "eyJhbGciOiJFUzUxMiJ9.eyJhbXIiOltdLCJhaWQiOiJVbmRybWU5WHV0Uy1iSmtoQS1ubm1kLTVYVzBKaUZ6SEh2TkI5Nm55RmU4IiwiYW91aWQiOm51bGwsImFvdXVpZCI6bnVsbCwiZXhwIjoxNzQ5NTk1NzU3LCJzaWF0IjpudWxsLCJ1aWQiOjEzNjc3MiwidXVpZCI6IjJiY2NhMThkLWU5YjQtNGFkMy05YjdkLTVlMDZhYjYzZmU3ZSIsImxhc3RfbWZhX2NoZWNrIjoxNzQ5NTkwMzU3fQ.AXjihkQ5dY8WVRvet9HPaIbaRM7NSI_toYh9U43aMy8DUjyYtA8Rkiqn2ezJTktAE-PxGRqNCkj_2dtdgmqiYYNeAHR_88HRa3SjlcG3RCGX4L3bw-hhVTvtTAnnHH2CdfmA1T15-KWRACikpXhRGL2jRl9Dw_cqKc81hPRLzlfxtiVa";
 const HARDCODED_COMPANY_ID = undefined; // Set this if you want to target a specific company
 
 // Add CORS middleware to allow browser-based clients
@@ -136,8 +134,19 @@ app.post("/mcp/rpc", async (c) => {
   let request: any = null;
   
   try {
-    // Use hardcoded token instead of getting from headers
-    const bearerToken = HARDCODED_PROCORE_TOKEN;
+    // Get token from environment variable
+    const bearerToken = c.env?.PROCORE_TOKEN;
+    if (!bearerToken) {
+      return c.json({
+        jsonrpc: "2.0",
+        id: null,
+        error: {
+          code: -32603,
+          message: "PROCORE_TOKEN environment variable is not set"
+        }
+      });
+    }
+    
     const companyId = HARDCODED_COMPANY_ID;
     
     const tools = new ProcoreTools({

@@ -9,6 +9,7 @@ declare namespace Cloudflare {
 		COOKIE_ENCRYPTION_KEY: "1234567890";
 		MCP_OBJECT: DurableObjectNamespace<import("./src/index").MyMCP>;
 		AI: Ai;
+		PROCORE_TOKEN: string;
 	}
 }
 interface Env extends Cloudflare.Env {}
