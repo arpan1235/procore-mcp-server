@@ -1,3 +1,5 @@
-GITHUB_CLIENT_ID=<your github client id>
-GITHUB_CLIENT_SECRET=<your github client secret>
-COOKIE_ENCRYPTION_KEY=<your cookie cookie encryption key>
+# Environment variables for development
+# Copy this file to .dev.vars and fill in your actual values
+
+# No specific environment variables required for Procore MCP Server
+# Authentication is handled via Bearer tokens in HTTP headers
